@@ -74,13 +74,13 @@ fi
 
 # Bedrock - invoke test
 echo -n "  Bedrock (invoke): "
-INVOKE_RESULT=$(aws bedrock-runtime invoke-model \
-    --model-id anthropic.claude-haiku-1-20250219 \
+BEDROCK_BODY=$(echo '{"anthropic_version":"bedrock-2023-05-31","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}' | base64 -w0)
+if aws bedrock-runtime invoke-model \
+    --model-id us.anthropic.claude-haiku-4-5-20251001-v1:0 \
     --content-type application/json \
-    --body '{"anthropic_version":"bedrock-2023-05-31","max_tokens":10,"messages":[{"role":"user","content":"say hi"}]}' \
-    /dev/stdout 2>/dev/null | head -c 200 || echo "FAILED")
-if echo "$INVOKE_RESULT" | grep -q "content"; then
-    echo "OK (claude-haiku responded)"
+    --body "$BEDROCK_BODY" \
+    /tmp/bedrock_probe_out.json &>/dev/null; then
+    echo "OK (claude-haiku-4.5 responded)"
 else
     echo "DENIED or ERROR"
 fi
