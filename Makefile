@@ -1,4 +1,4 @@
-.PHONY: all init probe ssh gh git-init git-nuke export-creds gen-docker-creds claude-docker help
+.PHONY: all init probe ssh gh git-init git-nuke export-creds gen-docker-creds gen-claude-cmd claude-docker help
 
 all: init
 
@@ -31,6 +31,10 @@ git-nuke:
 ## export-creds: Print AWS + Claude env vars to paste into a local terminal
 export-creds:
 	@bash scripts/export_creds.sh
+
+## gen-claude-cmd: Print a single command to run claude locally with AWS creds inline (no docker)
+gen-claude-cmd:
+	@bash scripts/gen_claude_cmd.sh
 
 ## gen-docker-creds: Print the make claude-docker command with creds baked in (run in cloud, paste locally)
 gen-docker-creds:
