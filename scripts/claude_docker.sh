@@ -24,15 +24,9 @@ echo "[+] Building Docker image..."
 DOCKER_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 docker build -t claude-workshop -f- "$DOCKER_DIR" <<'DOCKERFILE'
-FROM node:22-slim
+FROM node:22-alpine
 
-RUN apt-get update && apt-get install -y curl unzip jq git python3 && rm -rf /var/lib/apt/lists/*
-
-# Install AWS CLI
-RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o /tmp/awscliv2.zip \
-    && unzip -q /tmp/awscliv2.zip -d /tmp \
-    && /tmp/aws/install \
-    && rm -rf /tmp/aws /tmp/awscliv2.zip
+RUN apk add --no-cache bash curl jq git python3 aws-cli
 
 # Install Claude Code
 RUN npm install -g @anthropic-ai/claude-code
