@@ -1,6 +1,10 @@
-.PHONY: all init probe ssh gh git-init git-nuke export-creds gen-docker-creds gen-claude-cmd claude-docker help
+.PHONY: all opencode init probe ssh gh git-init git-nuke export-creds gen-docker-creds gen-claude-cmd claude-docker help
 
-all: init
+all:
+	@echo 'All targets are up to date'
+
+opencode:
+	@./scripts/setup_opencode.sh && opencode -m amazon-bedrock/us.amazon.nova-pro-v1:0 init
 
 ## init: Full environment setup (probe + git-init)
 init: probe git-init
